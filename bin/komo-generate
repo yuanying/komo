@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby -wKU
+# encoding: utf-8
+require 'optparse'
+
+base   = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+libdir = File.expand_path(File.join(File.dirname(base), "..", "lib"))
+
+$:.unshift(libdir) unless $:.include?(libdir)
+
+require 'komo'
+
+repository  = nil
+working_dir = Dir.pwd
+
+opt = OptionParser.new
+opt.version = Komo::VERSION
+opt.on("-r", "--repository GIT_REPOSITORY") {|v| repository = v }
+opt.on("-w", "--working-directory WORKING_DIRECTORY") { |v| working_dir = v }
+opt.parse!
+
+require 'komo/builder'
+
+Komo::Builder.new(repository, working_dir).build!
