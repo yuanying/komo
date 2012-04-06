@@ -11,13 +11,19 @@ require 'komo'
 
 repository  = nil
 working_dir = Dir.pwd
+branch      = 'master'
 
 opt = OptionParser.new
 opt.version = Komo::VERSION
 opt.on("-r", "--repository GIT_REPOSITORY") {|v| repository = v }
+opt.on("-b", "--branch BRANCH") { |v| branch = v }
 opt.on("-w", "--working-directory WORKING_DIRECTORY") { |v| working_dir = v }
 opt.parse!
 
 require 'komo/builder'
 
-Komo::Builder.new(repository, working_dir).build!
+Komo::Builder.new.build(
+  repository: repository,
+  branch: branch,
+  working_dir: working_dir
+)
