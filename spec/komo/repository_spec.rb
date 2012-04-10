@@ -14,6 +14,7 @@ describe Komo::Repository do
     after   { FileUtils.rm_rf(temp_dir) }
 
     it 'copies repository files' do
+      pending 'not implemented.'
       lambda {
         repo.copy_files(temp_dir)
       }.should change { File.directory?(content_dir) && File.file?(index_html) }
