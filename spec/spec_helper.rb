@@ -1,3 +1,3 @@
 require 'komo'
 
-$root = File.dirname(__FILE__) + '..'
+$root = File.join(File.dirname(__FILE__), '..')
