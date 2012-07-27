@@ -15,18 +15,30 @@ class Komo::Repository
     
   end
 
-  def changed_files previous_rev=nil
+  def new_files previous_rev=nil
   	unless previous_rev
       all_contents(tree)
     end
   end
 
-  def all_contents tree, path=nil, rtn=[]
+  def modified_files previous_rev=nil
+    unless previous_rev
+      []
+    end
+  end
+
+  def removed_files previous_rev=nil
+    unless previous_rev
+      []
+    end
+  end
+
+  def all_contents tree, path=[], rtn=[]
     tree.contents.each do |content|
       if content.kind_of?(Grit::Tree)
-        all_contents(content, (path ? File.join(path, content.name) : content.name), rtn)
+        all_contents(content, path + [content.name], rtn)
       else
-        rtn << (path ? File.join(path, content.name) : content.name)
+        rtn << (path + [content.name]).join('/')
       end
     end
     rtn

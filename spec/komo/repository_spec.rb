@@ -23,16 +23,41 @@ describe Komo::Repository do
     end
   end
 
-  describe '#changed_files' do
+  describe '#new_files' do
 
     context 'when previous_rev = nil' do
 
       it 'should list all files.' do
-        repo.changed_files.sort.should == all_files.sort
+        repo.new_files.sort.should == all_files.sort
       end
 
     end
 
   end
+
+  describe '#modified_files' do
+
+    context 'when previous_rev = nil' do
+
+      it 'should return blank array.' do
+        repo.modified_files.should == []
+      end
+
+    end
+
+  end
+
+  describe '#removed_files' do
+
+    context 'when previous_rev = nil' do
+
+      it 'should return blank array.' do
+        repo.removed_files.should == []
+      end
+
+    end
+
+  end
+
 
 end
