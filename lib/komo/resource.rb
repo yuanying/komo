@@ -4,7 +4,7 @@ require "fileutils"
 require "digest/sha1"
 require "date"
 
-class Komo::RawResource
+class Komo::RawItem
   attr_accessor :path, :metadata, :content
   def initialize(path)
     @path = path
@@ -33,7 +33,7 @@ class Komo::RawResource
   end
 end
 
-class Komo::Resource
+class Komo::Item
   include DataMapper::Resource
 
   property :id,         Serial
@@ -42,4 +42,6 @@ class Komo::Resource
 
   property :path,       String
   property :created_at, DateTime
+
+  property :type, Discriminator
 end

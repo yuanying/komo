@@ -5,4 +5,4 @@ module Komo
 end
 
 require 'komo/repository'
-
+require 'komo/resource'

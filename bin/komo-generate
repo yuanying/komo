@@ -25,7 +25,9 @@ opt.parse!
 
 require 'komo/builder'
 
+DataMapper::Logger.new($stdout, :debug)
 DataMapper.setup(:default, "sqlite:///#{working_dir}/index.db")
+
 
 Komo::Builder.new.build(
   working_dir: working_dir,
