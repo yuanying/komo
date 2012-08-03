@@ -4,33 +4,31 @@ class Komo::Repository
   attr_reader :repo
   attr_reader :branch
   attr_reader :tree
+  attr_reader :content
 
   def initialize options={}
-    @repo   = Grit::Repo.new(File.expand_path(options[:path]))
-    @branch = options[:branch] || 'master'
-    @tree   = @repo.commits(@branch).first.tree
-  end
-
-  def copy_files target_dir
-    
+    @repo     = Grit::Repo.new(File.expand_path(options[:path]))
+    @branch   = options[:branch] || 'master'
+    @tree     = @repo.commits(@branch).first.tree
+    @content  = @tree / 'content'
   end
 
   def new_files previous_rev=nil
-  	unless previous_rev
-      all_contents(tree)
-    end
+  	# unless previous_rev
+      all_contents(content)
+    # end
   end
 
   def modified_files previous_rev=nil
-    unless previous_rev
+    # unless previous_rev
       []
-    end
+    # end
   end
 
   def removed_files previous_rev=nil
-    unless previous_rev
+    # unless previous_rev
       []
-    end
+    # end
   end
 
   def all_contents tree, path=[], rtn=[]

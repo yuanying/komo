@@ -5,14 +5,13 @@ class Komo::Builder
   # Build a site.
   #
   # @param [Hash] options
-  # @option options [String] :repository
+  # @option options [String] :working_dir
   # @option options [String] :branch        (optional)
-  # @option options [String] :working_dir   (optional)
   def build(options={})
-    repository  = Grit::Repo.new(File.expand_path(options[:repository]))
+    path        = File.expand_path(options[:working_dir] || Dir.pwd)
     branch      = options[:branch] || 'master'
-    working_dir = File.expand_path(options[:working_dir] || Dir.pwd)
 
+    repository  = Komo::Repository.new(path: path, branch: branch)
   end
 
 end

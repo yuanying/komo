@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'fileutils'
 
 describe Komo::Repository do
-  let(:all_files) {['Rakefile', 'content/index.html', 'content/archives/2012/07/01/711.html']}
+  let(:all_files) {['index.html', 'archives/2012/07/01/711.html']}
 
   let(:repository_path) { File.join( $root, 'example' )}
   let(:temp_dir)        { File.join( $root, 'temp', 'example' ) }
@@ -11,17 +11,6 @@ describe Komo::Repository do
 
   before  { FileUtils.mkdir_p(temp_dir) }
   after   { FileUtils.rm_rf(temp_dir) }
-
-  describe '#copy_files' do
-    let(:index_html)      { File.join( content_dir, 'index.html') }
-
-    it 'copies repository files' do
-      pending 'not implemented.'
-      lambda {
-        repo.copy_files(temp_dir)
-      }.should change { File.directory?(content_dir) && File.file?(index_html) }
-    end
-  end
 
   describe '#new_files' do
 
