@@ -14,6 +14,17 @@ class Komo::Builder
     repository  = Komo::Repository.new(path: path, branch: branch)
 
     load_models(path)
+
+    # p Komo::Resource.descendants.first
+
+    # TODO fix previous_rev parameter.
+    repository.modified_files(nil).each do |path, file|
+      metadata, content = {}, file.data
+      if content.match(/^-{3,5}\s*$/)
+        raw_resource = Komo::RawResource.new(path, content)
+        metadata, content = raw_resource.metadata, raw_resource.content
+      end
+    end
   end
 
   def load_models(path)

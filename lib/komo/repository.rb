@@ -13,16 +13,8 @@ class Komo::Repository
     @content  = @tree / 'content'
   end
 
-  def new_files previous_rev=nil
-  	# unless previous_rev
-      all_contents(content)
-    # end
-  end
-
   def modified_files previous_rev=nil
-    # unless previous_rev
-      []
-    # end
+    all_contents(content)
   end
 
   def removed_files previous_rev=nil
@@ -31,12 +23,12 @@ class Komo::Repository
     # end
   end
 
-  def all_contents tree, path=[], rtn=[]
+  def all_contents tree, path=[], rtn={}
     tree.contents.each do |content|
       if content.kind_of?(Grit::Tree)
         all_contents(content, path + [content.name], rtn)
       else
-        rtn << (path + [content.name]).join('/')
+        rtn[(path + [content.name]).join('/')] = content
       end
     end
     rtn

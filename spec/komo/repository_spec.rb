@@ -12,26 +12,19 @@ describe Komo::Repository do
   before  { FileUtils.mkdir_p(temp_dir) }
   after   { FileUtils.rm_rf(temp_dir) }
 
-  describe '#new_files' do
-
-    context 'when previous_rev = nil' do
-
-      it 'should list all files.' do
-        repo.new_files.sort.should == all_files.sort
-      end
-
-    end
-
-  end
-
   describe '#modified_files' do
 
     context 'when previous_rev = nil' do
 
-      it 'should return blank array.' do
-        repo.modified_files.should == []
+      it 'should list all files.' do
+        repo.modified_files.keys.sort.should == all_files.sort
       end
 
+      it 'should contains Grit::Blob.' do
+        repo.modified_files.each do |k, v|
+          v.should be_kind_of(Grit::Blob)
+        end
+      end
     end
 
   end

@@ -23,5 +23,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rspec"
   s.add_runtime_dependency "data_mapper"
   s.add_runtime_dependency "dm-sqlite-adapter"
+  s.add_runtime_dependency "dm-ar-finders"
   s.add_runtime_dependency "grit"
 end

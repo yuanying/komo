@@ -4,11 +4,11 @@ require "fileutils"
 require "digest/sha1"
 require "date"
 
-class Komo::RawItem
+class Komo::RawResource
   attr_accessor :path, :metadata, :content
-  def initialize(path)
+  def initialize(path, data)
     @path = path
-    @data = File.read(path)
+    @data = data
   end
 
   def parse
@@ -33,15 +33,24 @@ class Komo::RawItem
   end
 end
 
-class Komo::Item
+class Komo::Resource
   include DataMapper::Resource
 
   property :id,         Serial
   property :title,      String
   property :body,       Text
 
-  property :path,       String
+  property :path,       String,   key: true
   property :created_at, DateTime
 
   property :type, Discriminator
+
+  def self.resource_pattern pattern=nil, &block
+    @@resource_pattern ||= []
+    if block_given?
+      @@resource_pattern << &block
+    else
+      @@resource_pattern << pattern
+    end
+  end
 end
