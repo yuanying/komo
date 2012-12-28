@@ -1,0 +1,15 @@
+site:
+  title:        'BONNOH FRACTION 15'
+  description:  '世の中に寝るより楽はなかりけり<br />浮世の馬鹿は起きて働く'
+  author:       'Yuanying'
+  root:         'http://www.fraction.jp'
+
+deploy:
+  user:       'yuanying'
+  host:       'www.fraction.jp'
+  remote_dir: '/Users/Shared/Sites/fraction'
+
+build:
+  working_dir:  '/tmp'
+  content_dir:  'content'
+  output_dir:   'output'

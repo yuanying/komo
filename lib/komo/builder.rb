@@ -15,15 +15,24 @@ class Komo::Builder
 
     load_models(path)
 
-    # p Komo::Resource.descendants.first
-
     # TODO fix previous_rev parameter.
     repository.modified_files(nil).each do |path, file|
-      metadata, content = {}, file.data
+      metadata, content = nil, file.data
       if content.match(/^-{3,5}\s*$/)
-        raw_resource = Komo::RawResource.new(path, content)
-        metadata, content = raw_resource.metadata, raw_resource.content
+        raw_resource = Komo::RawResource.new(path, file)
+        metadata, content = raw_resource.parse
       end
+
+      Komo::Resource.descendants.each do |resource_class|
+        resource_class.resource_patterns.each do |pattern|
+          if Regexp === pattern && pattern =~ path
+            puts path
+          elsif pattern.call(path, metadata)
+            puts path
+          end
+        end
+      end
+
     end
   end
 

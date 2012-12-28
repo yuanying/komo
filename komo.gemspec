@@ -9,13 +9,13 @@ Gem::Specification.new do |s|
   s.email       = ["yuanying@fraction.jp"]
   s.homepage    = ""
   s.summary     = %q{Static site generator for Ruby.}
-  s.description = %q{TODO: Write a gem description}
+  s.description = %q{Static site generator for Ruby.}
 
   s.rubyforge_project = "komo"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.executables   = %w{komo} #`git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
@@ -25,4 +25,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "dm-sqlite-adapter"
   s.add_runtime_dependency "dm-ar-finders"
   s.add_runtime_dependency "grit"
+  s.add_runtime_dependency "hashie"
+  s.add_runtime_dependency "deep_merge"
+  s.add_runtime_dependency "rdiscount"
 end

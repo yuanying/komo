@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+require 'optparse'
+
+base   = File.symlink?(__FILE__) ? File.readlink(__FILE__) : __FILE__
+libdir = File.expand_path(File.join(File.dirname(base), "..", "lib"))
+
+$:.unshift(libdir) unless $:.include?(libdir)
+
+working_dir	= nil
+config_file = File.join(Dir.pwd, 'config.yml')
+branch      = nil
+
+opt = OptionParser.new
+opt.version = Komo::VERSION
+opt.on("-c", "--config_file CONFIG_FILE") {|v| config_file = File.expand_path(v) }
+opt.on("-w", "--working_dir GIT_REPOSITORY") {|v| working_dir = File.expand_path(v) }
+opt.on("-b", "--branch BRANCH") { |v| branch = v }
+opt.parse!
+
+require 'komo'
+
+options = { :build => {} }
+options[:build][:working_dir] = working_dir if working_dir
+options[:build][:branch]      = branch      if branch
+
+config  = Komo::Config.new(config_file, options)
+Komo::Resource.config = config
+path    = File.expand_path(ARGV[0])
+
+DataMapper::Logger.new($stdout, :debug)
+DataMapper.setup(:default, "sqlite:///#{config.build.working_dir}/index.db")
+
+if File.join(Dir.pwd, "boot.rb")
+  require File.join(Dir.pwd, "boot.rb")
+  DataMapper.auto_upgrade!
+else
+  abort "No boot.rb!"
+end
+
+# puts path
+
+raw_resource = Komo::RawResource.new(Komo::Utils.to_rel(config.build.working_dir, path), open(path).read)
+# p raw_resource
+
+p rs = Komo::Resource.find(raw_resource)
+p rs.first.url
