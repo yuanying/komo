@@ -3,10 +3,7 @@
 require "rdiscount"
 require "komo/filters"
 
-module Komo
-  class MarkdownFilter < Filter
-    def call(resource, content, options={})
-      RDiscount.new(content).to_html
-    end
-  end
+Komo::Filters.register :markdown do |input|
+  RDiscount.new(input).to_html
 end
+

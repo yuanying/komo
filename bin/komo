@@ -43,5 +43,5 @@ end
 raw_resource = Komo::RawResource.new(Komo::Utils.to_rel(config.build.working_dir, path), open(path).read)
 # p raw_resource
 
-p rs = Komo::Resource.find(raw_resource)
-p rs.first.url
+Komo::Resource.pre_process_all(raw_resource)
+p Komo::Resource.modified_resources.first.url

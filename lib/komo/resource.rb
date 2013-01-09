@@ -60,43 +60,64 @@ class Komo::Resource
     @@config
   end
 
+  def self.resource_type
+    self.name.downcase
+  end
+
   def self.find_or_create_or_destroy raw_resource
-    if self.has?(raw_resource)
+    if self.resource_type == raw_resource.metadata[:type]
       rep = self.first_or_create(:path => raw_resource.path)
       rep.raw_resource = raw_resource
       rep.save!
-      return rep
+      return [rep]
     else
       self.all(:path => raw_resource.path).each do |rep|
         rep.destroy
       end
-      return nil
+      return []
     end
   end
 
-  def self.find(raw_resource)
-    [].tap do |rtn|
-      Komo::Resource.descendants.each do |rep_class|
-        rep = rep_class.find_or_create_or_destroy(raw_resource)
-        rtn << rep if rep
-      end
+  def self.pre_process_all(raw_resource)
+    Komo::Resource.descendants.each do |rep_class|
+      rep_class.pre_process(raw_resource)
     end
+  end
+
+  def self.pre_process(raw_resource)
+    # abstract method
+    self.find_or_create_or_destroy(raw_resource).each do |rep|
+      self.modified_resources << rep 
+    end
+  end
+
+  def self.modified_resources
+    @@modified_resources ||= []
+    @@modified_resources
   end
 
   def self.filters
     @filters ||= Array.new
   end
 
-  def self.filter(filter, *args)
-    self.filters << filter.new(*args)
+  def self.filter=(filter)
+    self.filters << filter
   end
 
-  def self.extname=(extname)
-    @extname = extname
+  def self.extension=(extension)
+    extension = extension
   end
 
-  def self.extname
-    @extname || '.html'
+  def self.extension
+    extension || '.html'
+  end
+
+  def self.layout=(layout)
+    @layout = layout
+  end
+
+  def self.layout
+    @layout || 'default'
   end
 
   def config
@@ -106,7 +127,7 @@ class Komo::Resource
   def output_path(page=0)
     output_path = File.join(self.config.build.working_dir, self.config.build.output_dir, path.sub(self.config.build.content_dir, ''))
 
-    ext       = self.class.extname
+    ext       = self.class.extension
     basename  = File.basename(output_path, '.*')
     dirname   = File.dirname(output_path)
 
@@ -119,7 +140,7 @@ class Komo::Resource
     url = output_path(page).sub(File.join(self.config.build.working_dir, self.config.build.output_dir), '')
     url = File.join('', url)
 
-    ext       = File.extname(url)
+    ext       = File.extension(url)
     basename  = File.basename(url)
     if basename == 'index.html'
       url.sub!(/index.html$/, '')

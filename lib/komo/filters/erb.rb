@@ -3,10 +3,10 @@
 require 'erb'
 require "komo/filters"
 
-module Komo
-  class ErbFilter < Filter
-    def call(resource, content, options={})
-
-    end
-  end
+# Render text via ERB using the built in ERB library.
+Komo::Filters.register :erb do |input, cursor|
+  b = cursor.renderer.get_binding
+  ERB.new(input, nil, '-').result(b)
 end
+
+# EOF
