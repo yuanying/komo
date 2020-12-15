@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+require 'komo'
+require 'find'
+require 'logging'
+
+config_file = File.expand_path('./komo.yaml')
+rebuild = false
+
+opt = OptionParser.new
+opt.version = Komo::VERSION
+opt.on("-c", "--config_file CONFIG_FILE") {|v| config_file = File.expand_path(v) }
+opt.on("-r", "--rebuild"){|v| rebuild = v }
+opt.parse!
+
+logger = Logging.logger['Komo']
+logger.level = :info
+# logger.add_appenders \
+#     Logging.appenders.stdout
+
+logger = Logging.logger['Komo::Journal']
+logger.level = :info
+logger.add_appenders \
+    Logging.appenders.stdout
+
+config = Komo::Config.new(config_file)
+
+# Komo::Resources.init(config)
+Komo::Builder.new.build(config, rebuild: rebuild)
