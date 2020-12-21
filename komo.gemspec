@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency('logging', '=2.2.2')
   spec.add_dependency('rdiscount')
   spec.add_dependency('RedCloth')
+  spec.add_dependency('nokogiri')
 end
