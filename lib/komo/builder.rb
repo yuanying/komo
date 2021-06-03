@@ -20,7 +20,7 @@ class Komo::Builder
 
       # otherwise, layout the resource and write the results to
       # the output directory
-      elsif page.type == 'entry' || page.type == 'index' || page.type == 'rdf'
+      elsif page.type == 'entry' || page.type == 'index' || page.type == 'rdf' || page.type == 'draft'
         config.journal.create_or_update(page)
         Komo::Renderer.write(page)
       end
