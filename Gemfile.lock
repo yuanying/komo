@@ -15,11 +15,13 @@ GEM
     logging (2.2.2)
       little-plugger (~> 1.1)
       multi_json (~> 1.10)
-    mini_portile2 (2.4.0)
-    minitest (5.14.0)
+    mini_portile2 (2.8.0)
+    minitest (5.16.3)
     multi_json (1.15.0)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.13.8)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
+    racc (1.6.0)
     rake (12.3.3)
     rdiscount (2.2.0.2)
 
@@ -32,4 +34,4 @@ DEPENDENCIES
   rake (~> 12.0)
 
 BUNDLED WITH
-   2.1.4
+   2.2.22

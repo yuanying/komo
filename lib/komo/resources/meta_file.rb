@@ -135,7 +135,7 @@ class MetaFile
         buffer << line
       end
 
-      h = YAML.load(buffer)
+      h = YAML.load(buffer, permitted_classes: [Time])
       raise Error, ERR_MSG unless h.instance_of?(Hash)
 
       if first then h = first.merge(h)
@@ -198,6 +198,7 @@ class MetaFile
       if META_SEP =~ line
         pos = count
         @meta_count += 1
+        break
       end
     end
     return if pos.nil?
