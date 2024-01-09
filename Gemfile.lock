@@ -10,7 +10,7 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    RedCloth (4.3.2)
+    RedCloth (4.3.3)
     little-plugger (1.1.4)
     logging (2.2.2)
       little-plugger (~> 1.1)
